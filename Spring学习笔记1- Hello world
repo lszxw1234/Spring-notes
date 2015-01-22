@@ -1,0 +1,71 @@
+Spring版本的HelloWorld
+
+首先需要准备Spring的jar包，可从官方网站上下载。http://projects.spring.io/spring-framework/
+本次会用到Spring的两个基本包，spring.jar和commons-logging.jar。另外会用到用于测试的Junit包。
+
+在IDE中创建Java工程。
+首先编写一个接口类
+Java代码  
+1.package com.szy.spring.interfacebean;  
+2.  
+3.public interface PersonBean  
+4.{  
+5.    void show();  
+6.}  
+
+然后创建一个类实现这个接口
+
+Java代码  
+1.package com.szy.spring.implbean;  
+2.import com.szy.spring.interfacebean.PersonBean;  
+3.  
+4.public class UserBean implements PersonBean  
+5.{  
+6.  
+7.    public void show()  
+8.    {  
+9.        System.out.println("Hello World");  
+10.    }  
+11.  
+12.}  
+
+以上都是Java的基本语法，下面开始加入Spring的内容。从下载的Spring包中找到配置文件，删除不需要的东西，找到原始部分：
+Xml代码  
+1.<?xml version="1.0" encoding="UTF-8"?>  
+2.<beans xmlns="http://www.springframework.org/schema/beans" 
+3.    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+4.    xmlns:context="http://www.springframework.org/schema/context" 
+5.    xmlns:tx="http://www.springframework.org/schema/tx" 
+6.    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd  
+7.                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd  
+8.                http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">  
+9.  
+10.</beans>  
+在配置文件中加入Bean信息
+<bean id="userBean" class="com.szy.spring.implbean.UserBean" />
+  其中id为标识符，class位类的路径。
+  
+最后创建一个测试类测试一下：
+1.package com.szy.spring.test;  
+2.  
+3.import org.junit.Test;  
+4.import org.springframework.context.ApplicationContext;  
+5.import org.springframework.context.support.ClassPathXmlApplicationContext;  
+6.import com.szy.spring.interfacebean.PersonBean;  
+7.  
+8.  
+9.public class TestClass  
+10.{  
+11.    @Test 
+12.    public void testMethod() throws Exception  
+13.    {  
+14.        //读取配置文件  
+15.        ApplicationContext ctx=new ClassPathXmlApplicationContext("applicationContext.xml");  
+16.        //获取UserBean的实例  
+17.        PersonBean bean=(PersonBean)ctx.getBean("userBean");  
+18.        //调用方法  
+19.        bean.show();  
+20.    }  
+21.}  
+输出结果：Hello World。
+第一个Spring程序成功运行。
