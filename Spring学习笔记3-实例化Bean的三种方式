@@ -1,0 +1,42 @@
+Spring的实例化Bean有三种方式。
+  1.使用类构造器实例化
+  2.通过静态工厂实例化
+  3.通过实例工厂实例化
+三种实例化方法的配置如下：
+  1.<?xml version="1.0" encoding="UTF-8"?>  
+  2.<beans xmlns="http://www.springframework.org/schema/beans" 
+  3.        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  4.        xmlns:context="http://www.springframework.org/schema/context" 
+  5.        xmlns:tx="http://www.springframework.org/schema/tx" 
+  6.        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd  
+  7.                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd  
+  8.                http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">  
+  9.        <!-- 使用类构造器直接实例化 -->    
+  10.        <bean id="userBean1" class="com.szy.spring.implbean.UserBean" />  
+  11.        <!-- 使用静态工厂的方法实例化 -->  
+  12.        <bean id="userBean2" name="bean1;bean2"class="com.szy.spring.factory.BeanFactory" factory-method="UserBeanService" />  
+  13.        <!-- 使用实例工厂方法实例化 -->  
+  14.        <bean id="factory" class="com.szy.spring.factory.BeanFactory" />  
+  15.        <bean id="userBean3" factory-bean="factory" factory-method="getUserBeanService" />  
+  16.</beans>  
+其中，userBean2中使用到了name属性，当id存在的时候name是别名，否则取第一个为标识符。
+BeanFactory类的代码如下：
+  1.package com.szy.spring.factory;  
+  2.  
+  3.import com.szy.spring.implbean.UserBean;  
+  4.import com.szy.spring.interfacebean.PersonBean;  
+  5.  
+  6.public class BeanFactory  
+  7.{  
+  8.    //使用静态工厂的方法实例化使用  
+  9.    public static PersonBean UserBeanService()  
+  10.    {  
+  11.        return new UserBean();  
+  12.    }  
+  13.      
+  14.    public PersonBean getUserBeanService()  
+  15.    {  
+  16.        return new UserBean();  
+  17.    }  
+  18.}  
+  测试方法同之前一样，不再列出。
